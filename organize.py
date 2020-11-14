@@ -40,6 +40,7 @@ def move_file(fromPath:str,toPath:str)->bool:
     except FileExistsError:
         # Split the new path by . to remove the extension
         new_path_list = toPath.split(".")
+        print(new_path_list)
         last_digit = new_path_list[0].split("_")[-1]
         # if it already was a copy inc the number at the end and move again
         if last_digit.isdigit():
@@ -47,6 +48,7 @@ def move_file(fromPath:str,toPath:str)->bool:
         else:
             new_path_list[0] += "_1"
         new_path = ".".join(new_path_list)
+        print(new_path)
         status = move_file(fromPath,new_path)
         return status
 
@@ -74,14 +76,11 @@ def organize_files(path:str)->None:
         # Else get the proper folder for the extension and move it
         for folder in EXTENSION_MAP:
             if extension in EXTENSION_MAP[folder]:
-                status = move_file(file,f"{folder}\\{file}")
-            else:
-                status = move_file(file,f"Random\\{file}")
-
-            if not status:
-                return
-            else:
+                move_file(file,f"{folder}\\{file}")
                 break
+        else:
+            move_file(file,f"Random\\{file}")
+
 
     print("DONE")
 
