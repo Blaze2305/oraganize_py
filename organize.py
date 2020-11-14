@@ -71,7 +71,7 @@ def organize_files(path:str)->None:
         # Get the files extension
         extension = Path(file).suffix
         # if it doesnt exist it means its a folder so we can just skip it
-        if not extension:
+        if Path(file).is_dir():
             continue
         # Else get the proper folder for the extension and move it
         for folder in EXTENSION_MAP:
