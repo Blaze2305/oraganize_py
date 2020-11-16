@@ -3,13 +3,13 @@ from os import listdir, chdir, mkdir, getcwd
 from pathlib import Path
 
 # CONSTANTS
-FOLDERS = ["Videos","Images","Executables","Zips","Documents","Torrents","Excels","Random"]
+FOLDERS = ["Videos","Images","Executables","Zips","Documents","Torrents","Excels","Random","Folders"]
 
 
 # Extension folder name mapping
 EXTENSION_MAP = {
     "Videos" : ['.mp4','.mkv','.avi'],
-    "Images" : [".png",".jpg",".jpeg",".bmp",".gif"],
+    "Images" : [".png",".jpg",".jpeg",".bmp",".gif",".jfif"],
     "Executables":['.msi','.exe'],
     "Zips":['.tar','.gzip','.7z','.zip','.rar',".tar.gz"],
     "Documents":[".pdf",".docx",".ppt",".pptx"],
@@ -70,16 +70,19 @@ def organize_files(path:str)->None:
     for file in files:
         # Get the files extension
         extension = Path(file).suffix
+        if file in FOLDERS:
+            continue
         # if it doesnt exist it means its a folder so we can just skip it
         if Path(file).is_dir():
-            continue
-        # Else get the proper folder for the extension and move it
-        for folder in EXTENSION_MAP:
-            if extension in EXTENSION_MAP[folder]:
-                move_file(file,f"{folder}\\{file}")
-                break
+            move_file(file,f"Folders\\{file}")
         else:
-            move_file(file,f"Random\\{file}")
+            # Else get the proper folder for the extension and move it
+            for folder in EXTENSION_MAP:
+                if extension in EXTENSION_MAP[folder]:
+                    move_file(file,f"{folder}\\{file}")
+                    break
+            else:
+                move_file(file,f"Random\\{file}")
 
 
     print("DONE")
